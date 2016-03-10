@@ -18,7 +18,7 @@
 $('#urlShortenBtn').click(function(event) {
 
     event.preventDefault();
-    $.ajax({    url: "http://46.101.239.240:9003/add/", 
+    $.ajax({    url: "http://<url>/add/", 
                 type: "POST",
                 data: $('#longUrl').val(),
                 success: showShortenedUrl,
