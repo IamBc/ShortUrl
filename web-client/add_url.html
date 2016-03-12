@@ -17,6 +17,9 @@
 <script>
 $('#urlShortenBtn').click(function(event) {
 
+    if($('#longUrl').val() === '') {
+        alert("URL input can't be empty!");
+    }
     event.preventDefault();
     $.ajax({    url: "http://<url>/add/", 
                 type: "POST",
@@ -28,7 +31,6 @@ $('#urlShortenBtn').click(function(event) {
 });
 
 function showShortenedUrl(result){
-
     $("#shortUrlP").html("http://<url>/g/" + result);
 }
 
