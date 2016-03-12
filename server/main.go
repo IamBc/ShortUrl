@@ -32,8 +32,8 @@ func main() {
     rand.Seed(time.Now().UTC().UnixNano())
 
     //File server
-    go http.ListenAndServe(":" + os.Getenv("MICRO_URL_FILE_PORT"), http.FileServer(http.Dir(os.Getenv("MICRO_URL_FILES_DIR"))))
-    glog.Info("Started the file server on port:" + os.Getenv("MICRO_URL_FILES_DIR"))
+    go http.ListenAndServe(":" + os.Getenv("SHORT_URL_FILE_PORT"), http.FileServer(http.Dir(os.Getenv("SHORT_URL_FILES_DIR"))))
+    glog.Info("Started the file server on port:" + os.Getenv("SHORT_URL_FILES_DIR"))
 
     //Initialize the REST API routes
     router := mux.NewRouter().StrictSlash(false)
@@ -42,8 +42,8 @@ func main() {
     router.HandleFunc("/add/", Add)
     router.HandleFunc("/delete/{urlHash}", Remove)
 
-    glog.Info("Starting the API server on port:" + os.Getenv("MICRO_URL_API_PORT"))
-    glog.Info(http.ListenAndServe(":" + os.Getenv("MICRO_URL_API_PORT"), router))
+    glog.Info("Starting the API server on port:" + os.Getenv("SHORT_URL_API_PORT"))
+    glog.Info(http.ListenAndServe(":" + os.Getenv("SHORT_URL_API_PORT"), router))
 
 }
 
@@ -185,16 +185,6 @@ func checkUrl(input string) error {
         return errors.New(`Not an URL!`)
     }
 
-/*
-    if os.Getenv(`URL_CHECK_STRICT_MODE`) == `true` {
-        _, err := net.LookupHost(input)
-
-        if err != nil {
-            glog.Error(err, ` Invalid URL:  `, input)
-            return errors.New(`URL was not resolved!`)
-        }
-    }
-*/
     return nil
 }
 
