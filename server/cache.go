@@ -5,6 +5,12 @@ import (
         "sync"
        )
 
+/*
+Contains the implementation of the inmemory cache. 
+If it must be extended this code should be edited.
+No interface is made for the in memory cache
+*/
+
 type CacheItem struct {
     key string
     val string

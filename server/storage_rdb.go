@@ -7,8 +7,15 @@ import  (
             "strings"
         )
 
+/*
+Implementetaion of the storage_interface for relational databases
+*/
+
 var db *sql.DB //This is a connection pool. It must be global so it is visible in all files
 
+/*
+Must be called in the main function. It will create the nessecary environment for the storage.
+*/
 func InitStorage(){
     var err error
     db, err = sql.Open(os.Getenv("DB_CONNECTION_DRIVER"), os.Getenv("DB_CONNECTION_STRING"))
