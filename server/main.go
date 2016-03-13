@@ -172,16 +172,10 @@ func GenerateHash(inp string, length int) string{
 
 func checkUrl(input string) error {
 
-    u, err := url.Parse(input)
+    //u, err := url.UrlParse(input)
+    _, err := url.ParseRequestURI(input)
     if err != nil {
         glog.Error("  error:", err)
-        return errors.New(`Not an URL!`)
-    }
-
-    if u.Scheme == "" {
-        u, _ = url.Parse("http://" + input)
-    } else if u.Scheme != "http" && u.Scheme != "https" {
-        glog.Error("  error: scheme '%s' unsupported\n", u.Scheme)
         return errors.New(`Not an URL!`)
     }
 
