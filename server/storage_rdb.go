@@ -32,7 +32,7 @@ func GetURLFromStorage(urlHash string) (string, error){
     var err error
 
     tx, err := db.Begin()
-    rows, err := tx.Query(`SELECT url FROM urls WHERE url_hash = ?`, urlHash)
+    rows, err := tx.Query(`SELECT url FROM urls WHERE url_hash = $1`, urlHash)
     if err != nil {
         glog.Error(err)
         tx.Rollback()
@@ -57,11 +57,11 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
     var err error
 
     tx, err := db.Begin()
-    _, err = tx.Query(`INSERT INTO urls(url_hash, url) VALUES(?, ?)`, urlHash, url)
+    _, err = tx.Query(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`, urlHash, url)
 
     // Hash already exists
     if err != nil && strings.ContainsAny(err.Error(), `Error 1062`) {
-        rows, err := tx.Query(`SELECT url_hash FROM urls WHERE url = ?`, url)
+        rows, err := tx.Query(`SELECT url_hash FROM urls WHERE url = $1`, url)
         if err != nil {
             glog.Error(err)
             tx.Rollback()
@@ -88,7 +88,7 @@ func DeleteURL(urlHash string) error{
     var err error
 
     tx, err := db.Begin()
-    _, err = tx.Query(`DELETE FROM urls WHERE url_hash = ?`, urlHash)
+    _, err = tx.Query(`DELETE FROM urls WHERE url_hash = $1`, urlHash)
     if err != nil {
         glog.Error(err)
         tx.Rollback()
