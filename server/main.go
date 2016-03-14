@@ -8,6 +8,7 @@ import  (
 
             "github.com/gorilla/mux"
             _ "github.com/go-sql-driver/mysql"
+	    _ "github.com/lib/pq"
             "io/ioutil"
             "net/url"
             "math/rand"
