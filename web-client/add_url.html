@@ -9,10 +9,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   </head>
   <body>
-        <h2>Url Shortener</h2>
+        <h2>URL Shortener</h2>
         <input id="longUrl" type="text" />
         <input id="urlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
         <p id="shortUrlP"></p>
+
+        <br/><br/><br/><br/>
+
+        <h3>Shorten URL with specific hash</h3>
+        <p>Url:</p>
+        <input id="longUrlCustomHash" type="text" />
+        <p>Hash:</p>
+        <input id="CustomHash" type="text" />
+        <br/>
+        <input id="customUrlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
+        <p id="shortUrlP"></p>
+
   </body>
 <script>
 $('#urlShortenBtn').click(function(event) {
@@ -21,7 +33,7 @@ $('#urlShortenBtn').click(function(event) {
         alert("URL input can't be empty!");
     }
     event.preventDefault();
-    $.ajax({    url: "http://<url>/add/", 
+    $.ajax({    url: "http://localhost:9003/add/", 
                 type: "POST",
                 data: $('#longUrl').val(),
                 success: showShortenedUrl,
@@ -31,12 +43,30 @@ $('#urlShortenBtn').click(function(event) {
 });
 
 function showShortenedUrl(result){
-    $("#shortUrlP").html("http://<url>/g/" + result);
+    $("#shortUrlP").html("http://localhost:9003/g/" + result);
 }
 
 function handleErr(xhr, reqStatus, reqError){
     alert(reqStatus + "   " + reqError);
 }
+
+
+$('#customUrlShortenBtn').click(function(event) {
+
+    if($('#longUrlCustomHash').val() === '') {
+        alert("URL input can't be empty!");
+    }
+    event.preventDefault();
+    $.ajax({    url: "http://localhost:9003/add_user_hash/" + $('#CustomHash').val(), 
+                type: "POST",
+                data: $('#longUrlCustomHash').val(),
+                success: showShortenedUrl,
+                error: handleErr
+           });
+    
+});
+
+
 </script>
 </html>
 
