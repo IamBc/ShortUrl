@@ -6,7 +6,7 @@ In case a new storage type will be implemented (eg in a file) it must implement 
 */
 
 type storage interface {
-    GetURLFromStorage(urlHash string) (string, error)
-    DeleteURL(urlHash string) error
-    AddURLToStorage(urlHash string, bodyStr string) error
+	GetURLFromStorage(urlHash string) (string, error)
+	DeleteURL(urlHash string) error
+	AddURLToStorage(urlHash string, bodyStr string) error
 }

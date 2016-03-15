@@ -1,60 +1,59 @@
 package main
 
 import (
-        "time"
-        "sync"
-       )
+	"sync"
+	"time"
+)
 
 /*
-Contains the implementation of the inmemory cache. 
+Contains the implementation of the inmemory cache.
 If it must be extended this code should be edited.
 No interface is made for the in memory cache
 */
 
 type CacheItem struct {
-    key string
-    val string
-    age int64
+	key string
+	val string
+	age int64
 }
 
 type Cache struct {
-    items map[string] CacheItem
-    lock *sync.RWMutex
-    maxAgeSec int64
+	items     map[string]CacheItem
+	lock      *sync.RWMutex
+	maxAgeSec int64
 }
 
 func NewCache(maxAgeSeconds int64) *Cache {
-    return &Cache {
-        items: make(map[string] CacheItem, 1024),
-        lock: new(sync.RWMutex),
-        maxAgeSec: maxAgeSeconds,
-    }
+	return &Cache{
+		items:     make(map[string]CacheItem, 1024),
+		lock:      new(sync.RWMutex),
+		maxAgeSec: maxAgeSeconds,
+	}
 }
 
 func (c *Cache) GetVal(key string) string {
-    c.lock.RLock()
-    defer c.lock.RUnlock()
+	c.lock.RLock()
+	defer c.lock.RUnlock()
 
-    now := time.Now()
-    currTime := now.Unix()
-    if currTime - c.items[key].age > c.maxAgeSec {
-        return ``
-    }
-    return c.items[key].val
+	now := time.Now()
+	currTime := now.Unix()
+	if currTime-c.items[key].age > c.maxAgeSec {
+		return ``
+	}
+	return c.items[key].val
 }
 
-func (c *Cache) Add(key string, val string ) {
-    c.lock.Lock()
-    defer c.lock.Unlock()
+func (c *Cache) Add(key string, val string) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
 
-    now := time.Now()
-    age := now.Unix()
-    c.items[key] = CacheItem{key, val, age}
+	now := time.Now()
+	age := now.Unix()
+	c.items[key] = CacheItem{key, val, age}
 }
 
 func (c *Cache) Remove(id string) {
-    c.lock.Lock()
-    defer c.lock.Unlock()
-    delete(c.items, id)
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	delete(c.items, id)
 }
-
