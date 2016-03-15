@@ -147,6 +147,7 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
@@ -167,7 +168,7 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	glog.Error(`userSelectedHash: `, vars[`userSelectedHash`])
-	urlHash, err = AddURLToStorage(urlHash, bodyStr)
+	vars[`userSelectedHash`], err = AddURLToStorage(vars[`userSelectedHash`], bodyStr)
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
 	}
