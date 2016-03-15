@@ -41,6 +41,7 @@ func main() {
     router.HandleFunc("/g/{urlHash}", Redirect)
     router.HandleFunc("/check/{urlHash}", Check)
     router.HandleFunc("/add/", Add)
+    router.HandleFunc("/add_user_hash/{userSelectedHash}", AddUserSelectedHash)
     router.HandleFunc("/delete/{urlHash}", Remove)
 
     glog.Info("Starting the API server on port:" + os.Getenv("SHORT_URL_API_PORT"))
@@ -140,6 +141,43 @@ func Add(w http.ResponseWriter, r *http.Request){
     }
     w.Write([]byte(urlHash))
 }
+
+func AddUserSelectedHash(w http.ResponseWriter, r *http.Request){
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+
+    if r.Method != "POST" {
+        WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
+        glog.Error(r.Method)
+        return
+    }
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+    }
+    bodyStr := string(body) //bytes to string
+    glog.Info(bodyStr)
+    if bodyStr == `` {
+        WriteResp(w, http.StatusBadRequest, `Invalid URL!`)
+        return
+    }
+
+    err = checkUrl(bodyStr)
+    if err != nil {
+        WriteResp(w, http.StatusBadRequest, `Invalid URL!`)
+        glog.Error(err, ` Invalid URL:  `, bodyStr)
+        return
+    }
+
+    vars := mux.Vars(r)
+    glog.Error(`userSelectedHash: `, vars[`userSelectedHash`])
+    urlHash, err = AddURLToStorage(urlHash, bodyStr)
+    if err != nil {
+        WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+    }
+    w.Write([]byte(vars[`userSelectedHash`]))
+}
+
 
 func Remove(w http.ResponseWriter, r *http.Request){
     if r.Method != "DELETE"{
