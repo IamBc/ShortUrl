@@ -1,0 +1,33 @@
+{
+	"comment": "",
+	"ignore": "",
+	"package": [
+		{
+			"path": "github.com/gorilla/context",
+			"revision": "14f550f51af52180c2eefed15e5fd18d63c0a64a",
+			"revisionTime": "2014-06-04T09:11:50-07:00"
+		},
+		{
+			"path": "github.com/gorilla/mux",
+			"revision": "4b8fbc56f3b2400a7c7ea3dba9b3539787c486b6",
+			"revisionTime": "2014-08-11T07:46:53-07:00"
+		},
+		{
+			"path": "github.com/lib/pq",
+			"revision": "fbed41b4c063a307ab21bf37ae6705519fb34ca3",
+			"revisionTime": "2014-09-18T19:02:31+02:00"
+		},
+		{
+			"checksumSHA1": "+szf9XFd9UdUG6RdpXWRJK0jryo=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "fbed41b4c063a307ab21bf37ae6705519fb34ca3",
+			"revisionTime": "2014-09-18T19:02:31+02:00"
+		},
+		{
+			"path": "github.com/lib/pq/oid",
+			"revision": "fbed41b4c063a307ab21bf37ae6705519fb34ca3",
+			"revisionTime": "2014-09-18T19:02:31+02:00"
+		}
+	],
+	"rootPath": "github.com/IamBc/ShortUrl/server"
+}
