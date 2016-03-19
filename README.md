@@ -68,7 +68,7 @@ ShortUrl comes with a simple web interface. From there you can create short urls
 Let’s assume that we are testing the API from the host on which it’s deployed, using curl and it’s port is 9003.
 
 ### Invalid add request
-```
+```bash
 -v --data '' http://localhost:9003/add/
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > POST /add/ HTTP/1.1
