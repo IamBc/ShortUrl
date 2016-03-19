@@ -69,7 +69,7 @@ Let’s assume that we are testing the API from the host on which it’s deploye
 
 ### Invalid add request
 ```bash
--v --data '' http://localhost:9003/add/
+curl -v --data '' http://localhost:9003/add/
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > POST /add/ HTTP/1.1
 > User-Agent: curl/7.38.0
@@ -90,7 +90,7 @@ Invalid URL!
 ```
 
 ### Wrong method add request
-```
+```bash
 curl -v http://localhost:9003/add/
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > GET /add/ HTTP/1.1
@@ -112,7 +112,7 @@ Wrong method!
 
 ### Successful add request
 
-```
+```bash
 curl -v --data 'www.google.bg' http://localhost:9003/add/
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > POST /add/ HTTP/1.1
@@ -135,7 +135,7 @@ curl -v --data 'www.google.bg' http://localhost:9003/add/
 
 ### Successful redirect request
 
-```
+```bash
 curl -v http://localhost:9003/g/4hxrNG9w
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > GET /g/4hxrNG9w HTTP/1.1
@@ -155,7 +155,7 @@ curl -v http://localhost:9003/g/4hxrNG9w
 ```
 
 ### Successful check request
-```
+```bash
 curl -v http://localhost:9003/check/4hxrNG9w
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > GET /check/4hxrNG9w HTTP/1.1
@@ -174,7 +174,7 @@ www.google.bg
 
 ### Successful delete request
 
-```
+```bash
 curl -X 'DELETE' -v http://localhost:9003/delete/4hxrNG9w
 * Connected to localhost (127.0.0.1) port 9003 (#0)
 > DELETE /delete/4hxrNG9w HTTP/1.1
