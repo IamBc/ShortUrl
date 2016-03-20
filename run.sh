@@ -1,13 +1,16 @@
 echo "Initializing environment..."
 
-export SHORT_URL_FILES_DIR="" #Must be absolute path !!!
-export SHORT_URL_FILE_PORT=""
-export SHORT_URL_API_PORT=""
-export DB_CONNECTION_STRING=""
-export DB_CONNECTION_DRIVER=""
-export URL_CHECK_STRICT_MODE=""
+
+#NOTE: This is example configuration. If you run the install script this configuration will be enough to run ShortUrl.
+# It is **STRONGLY** encouraged for the dbname, user and password to be changed.
+
+export SHORT_URL_FILES_DIR="../web-client" 
+export SHORT_URL_FILE_PORT="9002"
+export SHORT_URL_API_PORT="9003"
+export DB_CONNECTION_STRING="user=shrt_url password=123 dbname=short_url sslmode=disable"
+export DB_CONNECTION_DRIVER="postgres"
 
 
 echo "Starting server..."
-/usr/local/go/bin/go run server/main.go server/storage_rdb.go server/cache.go  -logtostderr=true
+./server/server -logtostderr=true
 
