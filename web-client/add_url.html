@@ -33,7 +33,7 @@ $('#urlShortenBtn').click(function(event) {
         alert("URL input can't be empty!");
     }
     event.preventDefault();
-    $.ajax({    url: "http://localhost:9003/add/", 
+    $.ajax({    url: window.location.protocol + '//' +  window.location.hostname+":9003/add/", 
                 type: "POST",
                 data: $('#longUrl').val(),
                 success: showShortenedUrl,
@@ -43,7 +43,7 @@ $('#urlShortenBtn').click(function(event) {
 });
 
 function showShortenedUrl(result){
-    $("#shortUrlP").html("http://localhost:9003/g/" + result);
+    $("#shortUrlP").html(window.location.protocol + '//' + window.location.hostname+":9003/g/" + result);
 }
 
 function handleErr(xhr, reqStatus, reqError){
@@ -57,7 +57,7 @@ $('#customUrlShortenBtn').click(function(event) {
         alert("URL input can't be empty!");
     }
     event.preventDefault();
-    $.ajax({    url: "http://localhost:9003/add_user_hash/" + $('#CustomHash').val(), 
+    $.ajax({    url: window.location.protocol + '//' + window.location.hostname+":9003/add_user_hash/" + $('#CustomHash').val(), 
                 type: "POST",
                 data: $('#longUrlCustomHash').val(),
                 success: showShortenedUrl,
