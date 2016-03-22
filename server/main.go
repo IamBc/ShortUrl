@@ -32,7 +32,7 @@ func main() {
 
 	//File server
 	go http.ListenAndServe(":"+os.Getenv("SHORT_URL_FILE_PORT"), http.FileServer(http.Dir(os.Getenv("SHORT_URL_FILES_DIR"))))
-	glog.Info("Started the file server on port:" + os.Getenv("SHORT_URL_FILES_DIR"))
+	glog.Info("Started the file server on port:" + os.Getenv("SHORT_URL_FILE_PORT"))
 
 	//Initialize the REST API routes
 	router := mux.NewRouter().StrictSlash(false)
