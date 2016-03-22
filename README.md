@@ -191,3 +191,29 @@ curl -X 'DELETE' -v http://localhost:9003/delete/4hxrNG9w
 Deleted hash: 4hxrNG9w
 
 ```
+
+### Successful add request with user selected hash
+
+```bash
+curl -v  --data 'https://www.youtube.com/watch?v=a8gy-9ujgq20843yg5084z5' http://localhost:9003/add_user_hash/hash56785
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 9003 (#0)
+> POST /add_user_hash/hash56785 HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: localhost:9003
+> Accept: */*
+> Content-Length: 43
+> Content-Type: application/x-www-form-urlencoded
+>
+* upload completely sent off: 43 out of 43 bytes
+< HTTP/1.1 200 OK
+< Access-Control-Allow-Origin: *
+< Date: Tue, 22 Mar 2016 19:14:08 GMT
+< Content-Length: 9
+< Content-Type: text/plain; charset=utf-8
+<
+* Connection #0 to host localhost left intact
+hash56785
+```
+
