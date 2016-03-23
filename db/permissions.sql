@@ -1,5 +1,4 @@
-CREATE USER my_user;
-CREATE USER my_user WITH  PASSWORD 'my_pass';
-GRANT SELECT, INSERT, DELETE, UPDATE on urls to my_user;
+CREATE USER shrt_url_default WITH  PASSWORD '123';
+GRANT SELECT, INSERT, DELETE, UPDATE on urls to shrt_url_default;
 
-GRANT USAGE on urls_id_seq to my_user;
+GRANT USAGE on urls_id_seq to shrt_url_default;
