@@ -43,6 +43,7 @@ func GetURLFromStorage(urlHash string) (string, error) {
 	for rows.Next() {
 		err = rows.Scan(&url)
 		if err != nil {
+			tx.Rollback()
 			return ``, err
 		}
 	}
@@ -69,6 +70,7 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
 		for rows.Next() {
 			err = rows.Scan(&urlHash)
 			if err != nil {
+				tx.Rollback()
 				return ``, err
 			}
 		}
