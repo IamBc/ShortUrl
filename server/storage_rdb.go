@@ -5,6 +5,7 @@ import (
 	"github.com/golang/glog"
 	"os"
 	"strings"
+	_ "github.com/lib/pq"
 )
 
 /*
@@ -18,6 +19,7 @@ Must be called in the main function. It will create the nessecary environment fo
 */
 func InitStorage() {
 	var err error
+	//var tx    *sql.Tx
 	db, err = sql.Open(os.Getenv("DB_CONNECTION_DRIVER"), os.Getenv("DB_CONNECTION_STRING"))
 	if err != nil {
 		glog.Error(err)
@@ -31,6 +33,14 @@ func GetURLFromStorage(urlHash string) (string, error) {
 	var err error
 
 	tx, err := db.Begin()
+	if err != nil {
+	    glog.Error(err)
+	    return ``, err
+	} else {
+	    glog.Info("ERROR ON BEGIN IS NiLL!!!")
+	}
+
+
 	rows, err := tx.Query(`SELECT url FROM urls WHERE url_hash = $1`, urlHash)
 	if err != nil {
 		glog.Error(err)
@@ -56,8 +66,16 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
 	var err error
 
 	tx, err := db.Begin()
-	_, err = tx.Query(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`, urlHash, url)
 
+	stmt, err := db.Prepare(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`)
+	if err != nil {
+	    glog.Error("ERROR ON PREPARING FIRST STATEMENT")
+	}
+	_, err = tx.Stmt(stmt).Exec( urlHash, url)
+        if err != nil {
+                glog.Error(`ERROR IN FIRST QUERY: `, err)
+                tx.Rollback()
+        }
 	// Hash already exists
 	if err != nil && strings.ContainsAny(err.Error(), `Error 1062`) {
 		rows, err := tx.Query(`SELECT url_hash FROM urls WHERE url = $1`, url)
