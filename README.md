@@ -3,13 +3,12 @@
 Yet another URL shortening service. Coming with a simple (web) interface, JSON REST API and capable of serving thousands of requests per second per core.
 
 
-
 ## Installation
 
 ### Packages
 In order to run ShortUrl you need to have the following packages installed:
 * PostgreSQL
-* Go(lang)
+* Go(lang) (Version 1.5+)
 
 Although the names of the packages may vary from distribution to distribution for ubuntu/debian you can go with
 ```bash
@@ -19,9 +18,6 @@ Although the names of the packages may vary from distribution to distribution fo
 
 ### Golang libraries
 
-Once you have golang installed you must install the golang specific libraries which are used by the project.
-You can do this by typing: ```go install``` inside the ```server/``` directory in the project.
- 
 
 ## Build and Run
 
@@ -54,6 +50,7 @@ ShortUrl comes with a simple web interface. From there you can create short urls
 | Redirect | GET         | /g/<urlHash>      | -                            | Returns a 304 Moved permanently request, moved to the URL which was put .  The client should redirect to the original (long) url.               |
 | Delete   | DELETE      | /delete/<urlHash> | -                            | Deletes the entry for urlHash. If the entry doesn’t exist it will still return a 200 OK status                                                  |
 | Add User Selected Hash   | POST      | /add_user_hash/<urlHash> | -                            | Creates a short link with the urlHash which is selected by the API caller.                            |
+| View statistics   | GET      | /appstate/ | -                            | Fetches the statistics of the API in JSON format.                             |
 ## API Status Codes
 
 | Code                      | Description                                              |
@@ -63,6 +60,13 @@ ShortUrl comes with a simple web interface. From there you can create short urls
 | 404 Not found             | Method/File doesn’t exist                                |
 | 400 Bad Request           | Wrong parameters were passed when making the API Call.   |
 | 500 Internal Server Error | There was an internal error. The request can be retried. |
+
+
+## App Statistics
+
+- Counters are stored from the beginning of the process
+- Flags/Statuses change
+- There is no history, this is the *current* state of the App. For statistics, the data should be collected by a monitoring tool (eg Nagios, Zabbix)
 
 ## API EXAMPLES
 Let’s assume that we are testing the API from the host on which it’s deployed, using curl and it’s port is 9003.
