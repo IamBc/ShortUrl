@@ -6,7 +6,13 @@ import (
 	"os"
 	"strings"
 	_ "github.com/lib/pq"
+	"expvar" 
 )
+
+
+var (
+  dbCounters = expvar.NewMap("dbCounters")
+  )
 
 /*
 Implementetaion of the storage_interface for relational databases
@@ -40,7 +46,7 @@ func GetURLFromStorage(urlHash string) (string, error) {
 	    glog.Info("ERROR ON BEGIN IS NiLL!!!")
 	}
 
-
+	dbCounters.Add(`queryCount`, 1)
 	rows, err := tx.Query(`SELECT url FROM urls WHERE url_hash = $1`, urlHash)
 	if err != nil {
 		glog.Error(err)
@@ -67,6 +73,7 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
 
 	tx, err := db.Begin()
 
+	dbCounters.Add(`queryCount`, 1)
 	stmt, err := db.Prepare(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`)
 	if err != nil {
 	    glog.Error("ERROR ON PREPARING FIRST STATEMENT")
@@ -78,6 +85,7 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
         }
 	// Hash already exists
 	if err != nil && strings.ContainsAny(err.Error(), `Error 1062`) {
+		dbCounters.Add(`queryCount`, 1)
 		rows, err := tx.Query(`SELECT url_hash FROM urls WHERE url = $1`, url)
 		if err != nil {
 			glog.Error(err)
@@ -106,6 +114,7 @@ func DeleteURL(urlHash string) error {
 	var err error
 
 	tx, err := db.Begin()
+	dbCounters.Add(`queryCount`, 1)
 	_, err = tx.Query(`DELETE FROM urls WHERE url_hash = $1`, urlHash)
 	if err != nil {
 		glog.Error(err)
