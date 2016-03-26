@@ -13,13 +13,23 @@ import (
 	"math/rand"
 	"net/url"
 	"time"
+
+	"expvar"
+	"fmt"
 )
 
 var cache *Cache // In memory cache
 
+
+
+var (
+  reqCounters = expvar.NewMap("reqCounters")
+  )
+
 func main() {
 	//Initialize glog
 	flag.Parse()
+	glog.Info("default server mux: ", http.DefaultServeMux)
 
 	//Initialize cache
 	cache = NewCache(10)
@@ -41,6 +51,7 @@ func main() {
 	router.HandleFunc("/add/", Add)
 	router.HandleFunc("/add_user_hash/{userSelectedHash}", AddUserSelectedHash)
 	router.HandleFunc("/delete/{urlHash}", Remove)
+	router.HandleFunc("/appstate/", expvarHandler)
 
 	glog.Info("Starting the API server on port:" + os.Getenv("SHORT_URL_API_PORT"))
 	glog.Info(http.ListenAndServe(":"+os.Getenv("SHORT_URL_API_PORT"), router))
@@ -49,7 +60,9 @@ func main() {
 
 /* Handlers  */
 func Redirect(w http.ResponseWriter, r *http.Request) {
+	reqCounters.Add(`redirectReqCount`, 1)
 	if r.Method != "GET" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
 		return
 	}
@@ -81,7 +94,9 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 }
 
 func Check(w http.ResponseWriter, r *http.Request) {
+	reqCounters.Add(`checkReqCount`, 1)
 	if r.Method != "GET" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
 		return
 	}
@@ -103,8 +118,10 @@ func Check(w http.ResponseWriter, r *http.Request) {
 
 func Add(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	reqCounters.Add(`addReqCount`, 1)
 
 	if r.Method != "POST" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
 		glog.Error(r.Method)
 		return
@@ -139,8 +156,10 @@ func Add(w http.ResponseWriter, r *http.Request) {
 
 func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	reqCounters.Add(`addUserHashReqCount`, 1)
 
 	if r.Method != "POST" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
 		glog.Error(r.Method)
 		return
@@ -175,7 +194,9 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 }
 
 func Remove(w http.ResponseWriter, r *http.Request) {
+	reqCounters.Add(`removeReqCount`, 1)
 	if r.Method != "DELETE" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
 		return
 	}
@@ -196,6 +217,7 @@ func WriteResp(w http.ResponseWriter, status int, msg string) {
 }
 
 func GenerateHash(inp string, length int) string {
+	reqCounters.Add(`generatedHashes`, 1)
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	b := make([]byte, length)
 	for i := range b {
@@ -214,4 +236,19 @@ func checkUrl(input string) error {
 	}
 
 	return nil
+}
+
+
+func expvarHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	fmt.Fprintf(w, "{\n")
+	first := true
+	expvar.Do(func(kv expvar.KeyValue) {
+		if !first {
+			fmt.Fprintf(w, ",\n")
+		}
+		first = false
+		fmt.Fprintf(w, "%q: %s", kv.Key, kv.Value)
+	})
+	fmt.Fprintf(w, "\n}\n")
 }
