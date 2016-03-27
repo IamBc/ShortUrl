@@ -19,12 +19,23 @@ Although the names of the packages may vary from distribution to distribution fo
 ### Golang libraries
 
 
-## Build and Run
+## Installation
 
-To build and run the script you must trigger the script ```run.sh```, eg:
-``` bash run.sh ```
+To build the script from inside the *server* directory type:
+``` go build```
 
-Note that without configuring the project you will get some error.
+You must also create a database. The easiest way is to do so by running:
+```bash create_db.sh```
+
+The database and user that create_db.sh will create are set in ```run.sh``` so after building the binary and preparing the database you can run ShortUrl.
+Note that the default dbname, username and password are predictable. You should consider changing them.
+
+## Running
+
+Type:
+```bash run.sh``` 
+from inside the project directory.
+
 
 ## Configuration
 
