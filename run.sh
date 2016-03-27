@@ -7,7 +7,6 @@ echo "Initializing environment..."
 export SHORT_URL_FILES_DIR="./web-client" 
 export SHORT_URL_FILE_PORT="9002"
 export SHORT_URL_API_PORT="9003"
-#export DB_CONNECTION_STRING="user=shrt_url password=123 dbname=short_url sslmode=disable"
 export DB_CONNECTION_STRING="user=shrt_url_default password=123 dbname=short_url_def sslmode=disable"
 export DB_CONNECTION_DRIVER="postgres"
 
