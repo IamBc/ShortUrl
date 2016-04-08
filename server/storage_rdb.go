@@ -2,17 +2,17 @@ package main
 
 import (
 	"database/sql"
-	"github.com/golang/glog"
+	"expvar"
 	"os"
 	"strings"
+
+	"github.com/golang/glog"
 	_ "github.com/lib/pq"
-	"expvar" 
 )
 
-
 var (
-  dbCounters = expvar.NewMap("dbCounters")
-  )
+	dbCounters = expvar.NewMap("dbCounters")
+)
 
 /*
 Implementetaion of the storage_interface for relational databases
@@ -40,10 +40,10 @@ func GetURLFromStorage(urlHash string) (string, error) {
 
 	tx, err := db.Begin()
 	if err != nil {
-	    glog.Error(err)
-	    return ``, err
+		glog.Error(err)
+		return ``, err
 	} else {
-	    glog.Info("ERROR ON BEGIN IS NiLL!!!")
+		glog.Info("ERROR ON BEGIN IS NiLL!!!")
 	}
 
 	dbCounters.Add(`queryCount`, 1)
@@ -76,13 +76,13 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
 	dbCounters.Add(`queryCount`, 1)
 	stmt, err := db.Prepare(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`)
 	if err != nil {
-	    glog.Error("ERROR ON PREPARING FIRST STATEMENT")
+		glog.Error("ERROR ON PREPARING FIRST STATEMENT")
 	}
-	_, err = tx.Stmt(stmt).Exec( urlHash, url)
-        if err != nil {
-                glog.Error(`ERROR IN FIRST QUERY: `, err)
-                tx.Rollback()
-        }
+	_, err = tx.Stmt(stmt).Exec(urlHash, url)
+	if err != nil {
+		glog.Error(`ERROR IN FIRST QUERY: `, err)
+		tx.Rollback()
+	}
 	// Hash already exists
 	if err != nil && strings.ContainsAny(err.Error(), `Error 1062`) {
 		dbCounters.Add(`queryCount`, 1)

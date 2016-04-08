@@ -2,17 +2,19 @@ package main
 
 import (
 	"flag"
-	"github.com/golang/glog"
 	"net/http"
 	"os"
 
+	"github.com/golang/glog"
+
 	"errors"
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
 	"io/ioutil"
 	"math/rand"
 	"net/url"
 	"time"
+
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 
 	"expvar"
 	"fmt"
@@ -20,11 +22,9 @@ import (
 
 var cache *Cache // In memory cache
 
-
-
 var (
-  reqCounters = expvar.NewMap("reqCounters")
-  )
+	reqCounters = expvar.NewMap("reqCounters")
+)
 
 func main() {
 	//Initialize glog
@@ -165,7 +165,6 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
@@ -237,7 +236,6 @@ func checkUrl(input string) error {
 
 	return nil
 }
-
 
 func expvarHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")

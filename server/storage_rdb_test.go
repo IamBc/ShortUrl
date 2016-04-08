@@ -2,18 +2,18 @@ package main
 
 import (
 	"testing"
-	)
+)
 
 func TestInitStorage(t *testing.T) {
-   InitStorage()
+	InitStorage()
 }
 
 func TestGetURLFromStorage(t *testing.T) {
-    InitStorage()
+	InitStorage()
 
-    url, err := GetURLFromStorage(`jH1ufr87`)
+	url, err := GetURLFromStorage(`jH1ufr87`)
 
-    if err != nil || url != `http://www.dir.bg` {
-	t.Fail()
-    }
+	if err != nil || url != `http://www.dir.bg` {
+		t.Fail()
+	}
 }
