@@ -94,6 +94,7 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 }
 
 func Check(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	reqCounters.Add(`checkReqCount`, 1)
 	if r.Method != "GET" {
 		reqCounters.Add(`wrongMethodRequests`, 1)
@@ -193,6 +194,7 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 }
 
 func Remove(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	reqCounters.Add(`removeReqCount`, 1)
 	if r.Method != "DELETE" {
 		reqCounters.Add(`wrongMethodRequests`, 1)
