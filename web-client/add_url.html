@@ -25,6 +25,12 @@
         <input id="customUrlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
         <p id="shortUrlP"></p>
 
+        <h3>Check Url</h3>
+        <p>Short Url:</p>
+        <input id="shortUrlToCheck" type="text" />
+        <input id="shortUrlToCheckBtn" type="button"  class="btn btn-primary" value="Check URL!" />
+        <p>Original Url:</p>
+        <p id="originalUrl"></p>
   </body>
 <script>
 $('#urlShortenBtn').click(function(event) {
@@ -67,6 +73,23 @@ $('#customUrlShortenBtn').click(function(event) {
 });
 
 
+$('#shortUrlToCheckBtn').click(function(event) {
+
+    if($('#shortUrlToCheck').val() === '') {
+        alert("URL input can't be empty!");
+    }
+    event.preventDefault();
+    $.ajax({    url: window.location.protocol + '//' + window.location.hostname+":9003/check/" + $('#shortUrlToCheck').val().split('/g/')[1] , 
+                type: "GET",
+                success: showCheckedUrl,
+                error: handleErr
+           });
+    
+});
+
+function showCheckedUrl(result){
+    $('#originalUrl').html(result);
+}
 </script>
 </html>
 
