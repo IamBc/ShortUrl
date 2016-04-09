@@ -10,33 +10,50 @@
   </head>
   <body>
         <h2>URL Shortener</h2>
+        <p>This project is open source. You can host it and modify it as you wish.(MIT license) You can view the source <a href="https://github.com/IamBc/ShortUrl" >here</a>. <br/>
+        If you notice any issues please report them <a href="https://github.com/IamBc/ShortUrl/issues">here</a>. <br/>
+        Cheers, <br/>
+        Zlatin</p>
 
         <br/><br/><br/><br/>
 
+        <div class="row">
+          <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
         <h3>Shorten URL</h3>
         <input id="longUrl" type="text" />
+        <br/>
         <input id="urlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
         <p id="shortUrlP"></p>
+        </div>
+        </div>
+        
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <h3>Shorten URL with specific hash</h3>
+            <p>Url:</p>
+            <input id="longUrlCustomHash" type="text" />
+            <p>Your hash:</p>
+            <input id="CustomHash" type="text" />
+            <br/>
+            <input id="customUrlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
+            <p id="shortUrlP"></p>
+            </div>
+        </div>
+        
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+            <h3>Check Url</h3>
+            <p>Short Url:</p>
+            <input id="shortUrlToCheck" type="text" />
+            <input id="shortUrlToCheckBtn" type="button"  class="btn btn-primary" value="Check URL!" />
+            <p>Original Url:</p>
+            <p id="originalUrl"></p>
+            </div>
 
-        <br/><br/><br/><br/>
+        </div></div>
 
-        <h3>Shorten URL with specific hash</h3>
-        <p>Url:</p>
-        <input id="longUrlCustomHash" type="text" />
-        <p>Your hash:</p>
-        <input id="CustomHash" type="text" />
-        <br/>
-        <input id="customUrlShortenBtn" type="button"  class="btn btn-primary" value="Shorten URL!" />
-        <p id="shortUrlP"></p>
 
-        <br/><br/><br/><br/>
-
-        <h3>Check Url</h3>
-        <p>Short Url:</p>
-        <input id="shortUrlToCheck" type="text" />
-        <input id="shortUrlToCheckBtn" type="button"  class="btn btn-primary" value="Check URL!" />
-        <p>Original Url:</p>
-        <p id="originalUrl"></p>
   </body>
 <script>
 $('#urlShortenBtn').click(function(event) {
