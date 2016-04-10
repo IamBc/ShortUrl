@@ -4,6 +4,7 @@ import (
 	"flag"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/golang/glog"
 
@@ -236,7 +237,7 @@ func GenerateHash(inp string, length int) string {
 func checkUrl(input string) error {
 
 	//u, err := url.UrlParse(input)
-	_, err := url.ParseRequestURI(input)
+	_, err := url.ParseRequestURI(strings.Split(input, `#`)[0])
 	if err != nil {
 		glog.Error("  error:", err)
 		return errors.New(`Not an URL!`)
