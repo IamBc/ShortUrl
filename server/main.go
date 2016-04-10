@@ -37,6 +37,12 @@ func main() {
 	//Initialize the DB
 	InitStorage()
 
+	//Init the appstate flags
+	reqCounters.Add(`addUserHashReqCount`, 0)
+	reqCounters.Add(`addReqCount`, 0)
+	reqCounters.Add(`checkReqCount`, 0)
+	reqCounters.Add(`redirectReqCount`, 0)
+
 	//Used in url hash generation
 	rand.Seed(time.Now().UTC().UnixNano())
 
@@ -240,6 +246,7 @@ func checkUrl(input string) error {
 }
 
 func expvarHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	fmt.Fprintf(w, "{\n")
 	first := true
