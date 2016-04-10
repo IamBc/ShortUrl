@@ -50,7 +50,10 @@
 
                   <div class="col-sm-6 col-md-3">
                       <div class="thumbnail">
-                          <h3>App Statustics</h3>
+                          <h3>App Statistics</h3>
+                          <p><b>Note:</b> the redirectReqCount is relative, since the browsers usually cache it</p>
+                          <p><b>Note:</b> the statistics are gathered since the start of the process</p>
+                          <div id="appStateContainer"></div>
                       </div>
                   </div>
               </div>
@@ -108,6 +111,24 @@
 
 function showCheckedUrl(result){
     $('#originalUrl').html(result);
+}
+
+window.onload = function(){
+    $.ajax({    url: window.location.protocol + '//' + window.location.hostname+":9003/appstate/",
+      type: "GET",
+      success: generateStatistics,
+      error: handleErr
+  });
+}
+
+function generateStatistics(result){
+    console.log(result);
+    appStateHTML = '<p>Total add requests count:' + (result['reqCounters']['addUserHashReqCount'] + result['reqCounters']['addReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Add requests with random hash count:' + (result['reqCounters']['addReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Add requests with custom hash count:' + (result['reqCounters']['addUserHashReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Total link redirects count:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Tota link checks count:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
+    $('#appStateContainer').html(appStateHTML);
 }
 </script>
 </html>
