@@ -21,6 +21,7 @@
               <br/><br/><br/><br/>
 
               <div class="row">
+                  <div id="errContainer"></div>
                   <div class="col-sm-6 col-md-3">
                       <div class="thumbnail">
                           <h3>Shorten URL</h3>
@@ -89,10 +90,13 @@
 
   function showShortenedUrl(result){
       $("#shortUrlP").html(window.location.protocol + '//' + window.location.hostname+":9003/g/" + result);
+      $("#errContainer").html('');
   }
 
   function handleErr(xhr, reqStatus, reqError){
-      alert(reqStatus + "   " + reqError);
+      console.log(xhr);
+      $("#errContainer").html('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Error:  </strong>'
+       + xhr.responseText +'</div>');
   }
 
   $('#shortUrlToCheckBtn').click(function(event) {
@@ -126,8 +130,8 @@ function generateStatistics(result){
     appStateHTML = '<p>Total add requests count:' + (result['reqCounters']['addUserHashReqCount'] + result['reqCounters']['addReqCount']).toString() + '</p>';
     appStateHTML += '<p>Add requests with random hash count:' + (result['reqCounters']['addReqCount']).toString() + '</p>';
     appStateHTML += '<p>Add requests with custom hash count:' + (result['reqCounters']['addUserHashReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Total link redirects count:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Tota link checks count:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Total link check count:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Tota link redirect count:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
     $('#appStateContainer').html(appStateHTML);
 }
 </script>
