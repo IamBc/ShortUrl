@@ -2,8 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"expvar"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/golang/glog"
@@ -72,6 +74,25 @@ func AddURLToStorage(urlHash string, url string) (string, error) {
 	var err error
 
 	tx, err := db.Begin()
+
+	rows, err := db.Query(`SELECT count(*) from urls;`)
+	var urlCount int
+	for rows.Next() {
+		err = rows.Scan(&urlCount)
+		if err != nil {
+			tx.Rollback()
+			return ``, err
+		}
+	}
+
+	maxUrlCount, err := strconv.Atoi(os.Getenv(`MAX_URL_COUNT`))
+	if err != nil {
+		return ``, err
+	}
+
+	if urlCount >= maxUrlCount {
+		return `ui`, errors.New(`Capasity reached!`)
+	}
 
 	dbCounters.Add(`queryCount`, 1)
 	stmt, err := db.Prepare(`INSERT INTO urls(url_hash, url) VALUES($1, $2)`)
