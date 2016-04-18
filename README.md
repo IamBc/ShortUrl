@@ -51,6 +51,7 @@ The configuration of ShortUrl us done via environment variables which are set in
 | SHORT_URL_API_PORT   | Port on which the Rest(ful) API will be hosted                                                                  | 9003                                                     |
 | DB_CONNECTION_DRIVER | Driver name for the database that is being used.  See https://golang.org/s/sqldrivers for a list of drivers.    | postgres                                                 |
 | DB_CONNECTION_STRING | Connection string for the database. Depends on the actual DB that is being used. The example is with PostgreSQL | user=user password=pass dbname=short_url sslmode=disable |
+| MAX_URL_COUNT | Maximum amount of urls that ShortUrl can have at any given time. It's main goal is to prevent flooding and limiting the resource usage.  | 100 |
 
 ## Interface
 
