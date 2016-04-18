@@ -90,6 +90,7 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	url, err := GetURLFromStorage(vars[`urlHash`])
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	glog.Info(`Redirecting with hash: `, vars[`urlHash`], ` to: `, url)
 	cache.Add(vars[`urlHash`], url)
@@ -115,6 +116,7 @@ func Check(w http.ResponseWriter, r *http.Request) {
 	url, err := GetURLFromStorage(vars[`urlHash`])
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	glog.Info(`Redirecting with hash: `, vars[`urlHash`], ` to: `, url)
 
@@ -140,6 +142,7 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	bodyStr := string(body) //bytes to string
 	glog.Info(bodyStr)
@@ -152,11 +155,13 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		WriteResp(w, http.StatusBadRequest, `Invalid URL!`)
 		glog.Error(err, ` Invalid URL:  `, bodyStr)
+		return
 	}
 
 	if utf8.RuneCountInString(bodyStr) > maxURLLength {
 		WriteResp(w, http.StatusBadRequest, `URL exceeds max length!`)
 		glog.Error(err, `URL is too long!`)
+		return
 	}
 
 	err = checkUrl(bodyStr)
@@ -173,8 +178,10 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	if err != nil && urlHash == `ui` {
 		urlHash = ``
 		WriteResp(w, http.StatusInternalServerError, err.Error())
+		return
 	} else if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	w.Write([]byte(urlHash))
 }
@@ -193,6 +200,7 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	bodyStr := string(body) //bytes to string
 	glog.Info(bodyStr)
@@ -215,8 +223,10 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 	if err != nil && vars[`userSelectedHash`] == `ui` {
 		vars[`userSelectedHash`] = ``
 		WriteResp(w, http.StatusInternalServerError, err.Error())
+		return
 	} else if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+		return
 	}
 	w.Write([]byte(vars[`userSelectedHash`]))
 }
