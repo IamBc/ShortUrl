@@ -4,6 +4,7 @@ import (
 	"flag"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/golang/glog"
@@ -19,6 +20,7 @@ import (
 
 	"expvar"
 	"fmt"
+	"unicode/utf8"
 )
 
 var cache *Cache // In memory cache
@@ -144,6 +146,17 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	if bodyStr == `` {
 		WriteResp(w, http.StatusBadRequest, `Invalid URL!`)
 		return
+	}
+
+	maxURLLength, err := strconv.Atoi(os.Getenv(`MAX_URL_LENGTH`))
+	if err != nil {
+		WriteResp(w, http.StatusBadRequest, `Invalid URL!`)
+		glog.Error(err, ` Invalid URL:  `, bodyStr)
+	}
+
+	if utf8.RuneCountInString(bodyStr) > maxURLLength {
+		WriteResp(w, http.StatusBadRequest, `URL exceeds max length!`)
+		glog.Error(err, `URL is too long!`)
 	}
 
 	err = checkUrl(bodyStr)
