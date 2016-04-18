@@ -156,7 +156,11 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	urlHash := GenerateHash(bodyStr, 8)
 	glog.Error(`urlHash: `, urlHash)
 	urlHash, err = AddURLToStorage(urlHash, bodyStr)
-	if err != nil {
+
+	if err != nil && urlHash == `ui` {
+		urlHash = ``
+		WriteResp(w, http.StatusInternalServerError, err.Error())
+	} else if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
 	}
 	w.Write([]byte(urlHash))
@@ -194,7 +198,11 @@ func AddUserSelectedHash(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	glog.Error(`userSelectedHash: `, vars[`userSelectedHash`])
 	vars[`userSelectedHash`], err = AddURLToStorage(vars[`userSelectedHash`], bodyStr)
-	if err != nil {
+
+	if err != nil && vars[`userSelectedHash`] == `ui` {
+		vars[`userSelectedHash`] = ``
+		WriteResp(w, http.StatusInternalServerError, err.Error())
+	} else if err != nil {
 		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
 	}
 	w.Write([]byte(vars[`userSelectedHash`]))
