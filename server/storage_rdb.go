@@ -144,3 +144,34 @@ func DeleteURL(urlHash string) error {
 	tx.Commit()
 	return err
 }
+
+func GetConfigStorage() (string, error) {
+	tx, err := db.Begin()
+	if err != nil {
+		glog.Error(err)
+		return ``, err
+	} else {
+		glog.Info("ERROR ON BEGIN IS NiLL!!!")
+	}
+
+	dbCounters.Add(`queryCount`, 1)
+	rows, err := tx.Query(`SELECT settings FROM short_url;`)
+	if err != nil {
+		glog.Error(err)
+		tx.Rollback()
+		return ``, err
+	}
+	defer rows.Close()
+
+	var settings string
+	for rows.Next() {
+		err = rows.Scan(&settings)
+		if err != nil {
+			tx.Rollback()
+			return ``, err
+		}
+	}
+
+	tx.Commit()
+	return settings, err
+}
