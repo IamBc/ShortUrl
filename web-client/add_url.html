@@ -127,11 +127,11 @@ window.onload = function(){
 
 function generateStatistics(result){
     console.log(result);
-    appStateHTML = '<p>Total add requests count:' + (result['reqCounters']['addUserHashReqCount'] + result['reqCounters']['addReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Add requests with random hash count:' + (result['reqCounters']['addReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Add requests with custom hash count:' + (result['reqCounters']['addUserHashReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Total link check count:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
-    appStateHTML += '<p>Tota link redirect count:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
+    appStateHTML = '<p>Total added links:' + (result['reqCounters']['addUserHashReqCount'] + result['reqCounters']['addReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Total links with generated hash:' + (result['reqCounters']['addReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Total links with selected hash:' + (result['reqCounters']['addUserHashReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Total checked links:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
+    appStateHTML += '<p>Max unique visits for a link:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
     $('#appStateContainer').html(appStateHTML);
 }
 </script>
