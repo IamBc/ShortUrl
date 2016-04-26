@@ -72,6 +72,7 @@ func main() {
 /* Handlers  */
 func GetConfig(w http.ResponseWriter, r *http.Request) {
 	reqCounters.Add(`getConfigCount`, 1)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	if r.Method != "GET" {
 		reqCounters.Add(`wrongMethodRequests`, 1)
 		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
