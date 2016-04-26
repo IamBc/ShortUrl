@@ -10,13 +10,8 @@
   </head>
   <body>
       <div class="container-fluid">
-          <row>
-              <h2>URL Shortener</h2>
-              <p>This project is open source. You can host it and modify it as you wish.(MIT license) You can view the source and dicumentation <a href="https://github.com/IamBc/ShortUrl" >here</a>. <br/>
-                  If you notice any issues please report them <a href="https://github.com/IamBc/ShortUrl/issues">here</a>. <br/>
-                  Cheers, <br/>
-                  Zlatin</p>
-              </row>
+          <row id="greeting_msg">
+        </row>
 
               <br/><br/><br/><br/>
 
@@ -123,6 +118,12 @@ window.onload = function(){
       success: generateStatistics,
       error: handleErr
   });
+
+  $.ajax({    url: window.location.protocol + '//' + window.location.hostname+":9003/config/",
+    type: "GET",
+    success: setConfig,
+    error: handleErr
+});
 }
 
 function generateStatistics(result){
@@ -133,6 +134,10 @@ function generateStatistics(result){
     appStateHTML += '<p>Total checked links:' + (result['reqCounters']['checkReqCount']).toString() + '</p>';
     appStateHTML += '<p>Max unique visits for a link:' + (result['reqCounters']['redirectReqCount']).toString() + '</p>';
     $('#appStateContainer').html(appStateHTML);
+}
+
+function setConfig(setConfig){
+    $('#greeting_msg').html(setConfig);
 }
 </script>
 </html>
