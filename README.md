@@ -1,6 +1,6 @@
 # ShortUrl
 
-Yet another URL shortening service. Coming with a simple (web) interface, JSON REST API and capable of serving thousands of requests per second per core. 
+Yet another URL shortening service. Coming with a simple (web) interface, JSON REST API and capable of serving thousands of requests per second per core.
 The design allows the app to be put on several severs behind a load balancer.
 
 
@@ -36,7 +36,7 @@ Note that the default dbname, username and password are predictable. You should 
 ## Running
 
 Type:
-```bash run.sh``` 
+```bash run.sh```
 from inside the project directory.
 
 
@@ -54,9 +54,12 @@ The configuration of ShortUrl us done via environment variables which are set in
 | MAX_URL_COUNT | Maximum amount of urls that ShortUrl can have at any given time. It's main goal is to prevent flooding and limiting the resource usage.  | 100 |
 | MAX_URL_LENGTH | Maximum length of characters in a single URL (note: some characters consist of several bytes).  | 250 |
 
+## Configuring the greeting message
+The table short_url will have exactly 1 row. You can set the field "settings" with the html that you'd like to be displayed as a greeting on the top of the page.
+
 ## Interface
 
-ShortUrl comes with a simple web interface. From there you can create short urls. 
+ShortUrl comes with a simple web interface. From there you can create short urls.
 
 ## REST API
 | API Call | HTTP Method | Path              | Request Payload              | Description                                                                                                                                     |
@@ -97,7 +100,7 @@ curl -v --data '' http://localhost:9003/add/
 > Accept: */*
 > Content-Length: 0
 > Content-Type: application/x-www-form-urlencoded
-> 
+>
 < HTTP/1.1 400 Bad Request
 < Access-Control-Allow-Origin: *
 < Content-Type: text/plain; charset=utf-8
@@ -105,7 +108,7 @@ curl -v --data '' http://localhost:9003/add/
 < Date: Sat, 12 Mar 2016 18:49:28 GMT
 < Content-Length: 13
 * HTTP error before end of send, stop sending
-< 
+<
 Invalid URL!
 ```
 
@@ -117,14 +120,14 @@ curl -v http://localhost:9003/add/
 > User-Agent: curl/7.38.0
 > Host: localhost:9003
 > Accept: */*
-> 
+>
 < HTTP/1.1 405 Method Not Allowed
 < Access-Control-Allow-Origin: *
 < Content-Type: text/plain; charset=utf-8
 < X-Content-Type-Options: nosniff
 < Date: Sat, 12 Mar 2016 18:50:09 GMT
 < Content-Length: 14
-< 
+<
 Wrong method!
 * Connection #0 to host localhost left intact
 ```
@@ -141,14 +144,14 @@ curl -v --data 'www.google.bg' http://localhost:9003/add/
 > Accept: */*
 > Content-Length: 13
 > Content-Type: application/x-www-form-urlencoded
-> 
+>
 * upload completely sent off: 13 out of 13 bytes
 < HTTP/1.1 200 OK
 < Access-Control-Allow-Origin: *
 < Date: Sat, 12 Mar 2016 18:50:40 GMT
 < Content-Length: 8
 < Content-Type: text/plain; charset=utf-8
-< 
+<
 * Connection #0 to host localhost left intact
 4hxrNG9wz
 ```
@@ -162,13 +165,13 @@ curl -v http://localhost:9003/g/4hxrNG9w
 > User-Agent: curl/7.38.0
 > Host: localhost:9003
 > Accept: */*
-> 
+>
 < HTTP/1.1 301 Moved Permanently
 < Location: /g/www.google.bg
 < Date: Sat, 12 Mar 2016 18:51:58 GMT
 < Content-Length: 51
 < Content-Type: text/html; charset=utf-8
-< 
+<
 <a href="/g/www.google.bg">Moved Permanently</a>.
 
 * Connection #0 to host localhost left intact
@@ -182,13 +185,13 @@ curl -v http://localhost:9003/check/4hxrNG9w
 > User-Agent: curl/7.38.0
 > Host: localhost:9003
 > Accept: */*
-> 
+>
 < HTTP/1.1 200 OK
 < Content-Type: text/plain; charset=utf-8
 < X-Content-Type-Options: nosniff
 < Date: Sat, 12 Mar 2016 18:53:08 GMT
 < Content-Length: 14
-< 
+<
 www.google.bg
 ```
 
@@ -201,12 +204,12 @@ curl -X 'DELETE' -v http://localhost:9003/delete/4hxrNG9w
 > User-Agent: curl/7.38.0
 > Host: localhost:9003
 > Accept: */*
-> 
+>
 < HTTP/1.1 200 OK
 < Date: Sat, 12 Mar 2016 18:53:44 GMT
 < Content-Length: 22
 < Content-Type: text/plain; charset=utf-8
-< 
+<
 * Connection #0 to host localhost left intact
 Deleted hash: 4hxrNG9w
 
@@ -236,4 +239,3 @@ curl -v  --data 'https://www.youtube.com/watch?v=a8gy-9ujgq20843yg5084z5' http:/
 * Connection #0 to host localhost left intact
 hash56785
 ```
-
