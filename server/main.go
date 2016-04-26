@@ -45,6 +45,7 @@ func main() {
 	reqCounters.Add(`addReqCount`, 0)
 	reqCounters.Add(`checkReqCount`, 0)
 	reqCounters.Add(`redirectReqCount`, 0)
+	reqCounters.Add(`getConfigCount`, 0)
 
 	//Used in url hash generation
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -61,6 +62,7 @@ func main() {
 	router.HandleFunc("/add_user_hash/{userSelectedHash}", AddUserSelectedHash)
 	router.HandleFunc("/delete/{urlHash}", Remove)
 	router.HandleFunc("/appstate/", expvarHandler)
+	router.HandleFunc("/config/", GetConfig)
 
 	glog.Info("Starting the API server on port:" + os.Getenv("SHORT_URL_API_PORT"))
 	glog.Info(http.ListenAndServe(":"+os.Getenv("SHORT_URL_API_PORT"), router))
@@ -68,6 +70,21 @@ func main() {
 }
 
 /* Handlers  */
+func GetConfig(w http.ResponseWriter, r *http.Request) {
+	reqCounters.Add(`getConfigCount`, 1)
+	if r.Method != "GET" {
+		reqCounters.Add(`wrongMethodRequests`, 1)
+		WriteResp(w, http.StatusMethodNotAllowed, `Wrong method!`)
+		return
+	}
+
+	resp, err := GetConfigStorage()
+	if err != nil {
+		WriteResp(w, http.StatusInternalServerError, `Please try again later!`)
+	}
+	WriteResp(w, http.StatusOK, resp)
+}
+
 func Redirect(w http.ResponseWriter, r *http.Request) {
 	reqCounters.Add(`redirectReqCount`, 1)
 	if r.Method != "GET" {
