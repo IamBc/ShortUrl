@@ -240,3 +240,25 @@ curl -v  --data 'https://www.youtube.com/watch?v=a8gy-9ujgq20843yg5084z5' http:/
 * Connection #0 to host localhost left intact
 hash56785
 ```
+### Successful add request with user selected hash
+
+```bash
+ curl -v 'localhost:9003/config/'
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 9003 (#0)
+> GET /config/ HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: localhost:9003
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Access-Control-Allow-Origin: *
+< Content-Type: text/plain; charset=utf-8
+< X-Content-Type-Options: nosniff
+< Date: Fri, 29 Apr 2016 14:55:16 GMT
+< Content-Length: 346
+<
+My greeting text!
+* Connection #0 to host localhost left intact
+```
