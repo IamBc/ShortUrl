@@ -70,6 +70,7 @@ ShortUrl comes with a simple web interface. From there you can create short urls
 | Delete   | DELETE      | /delete/<urlHash> | -                            | Deletes the entry for urlHash. If the entry doesn’t exist it will still return a 200 OK status                                                  |
 | Add User Selected Hash   | POST      | /add_user_hash/<urlHash> | -                            | Creates a short link with the urlHash which is selected by the API caller.                            |
 | View statistics   | GET      | /appstate/ | -                            | Fetches the statistics of the API in JSON format.                             |
+| Get APP configuration   | GET      | /config/ | -                            | Fetches the payload of the configuration field in short_url. This field is made for the client's usage. It won't be                              |
 ## API Status Codes
 
 | Code                      | Description                                              |
